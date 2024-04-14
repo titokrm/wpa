@@ -84,6 +84,17 @@
 <script src="./jq.js"></script>
 
 <script>
+  function registerServiceWorker() {
+    // регистрирует скрипт sw в поддерживаемых браузерах
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js', { scope: '/' }).then(() => {
+        console.log('Service Worker registered successfully.');
+      }).catch(error => {
+        console.log('Service Worker registration failed:', error);
+      });
+    }
+  }
+
   const shift = 3;
 
   function hasCyrillic(text) {
@@ -143,6 +154,7 @@
     let curInput = $('#text').val();
     $('.result').text(decrypt(curInput, shift))
   });
+  registerServiceWorker();
 </script>
 
 </html>
