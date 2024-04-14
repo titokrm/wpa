@@ -1,0 +1,15 @@
+{
+  "background_color": "#fff",
+  "description": "Шифрует данные",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "icon/uaf.png",
+      "sizes": "500x500",
+      "type": "image/png"
+    }
+  ],
+  "name": "Capybara crypt",
+  "short_name": "Capybara crypt",
+  "start_url": "/index.html"
+}

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="apple-touch-icon" href="/icon/uaf.png">
+    <title>Позывные</title>
+    <link href="style.css" rel="stylesheet">
+    <link rel="manifest" href="~/manifest.json">
+    <style>
+        body {
+            font-family: Tahoma, sans-serif;
+            background-color: #fff;
+            width: 100%;
+            min-height: 100vh;
+            height: auto;
+            overflow-y: scroll;
+            padding: 2%;
+            box-sizing: border-box;
+        }
+
+        input {
+            width: 100%;
+            height: 40px;
+            font-size: 16px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            outline: none;
+        }
+
+        button {
+            height: 40px;
+            font-size: 16px;
+            display: inline-block;
+        }
+
+        .btn-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-container button {
+            width: calc(50% - 5px);
+            font-weight: 600;
+            color: #fff;
+            border: none;
+            background-color: forestgreen;
+            text-transform: capitalize;
+            cursor: pointer;
+        }
+
+        .btn-container button:hover {
+            opacity: 0.7;
+        }
+
+        .btn-container button.decrypt {
+            background-color: midnightblue;
+        }
+
+        .btn-container button:disabled {
+            background-color: #808080;
+        }
+
+        .error {
+            border: 1px solid crimson;
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+    <input id="text" type="text" name="text">
+    <div class="btn-container">
+        <button id="encrypt">encrypt</button>
+        <button id="decrypt" class="decrypt">decrypt</button>
+    </div>
+    <p class="result"></p>
+</div>
+</body>
+<script src="/jq.js"></script>
+
+<script>
+    const shift = 3;
+
+    function hasCyrillic(text) {
+        // Паттерн для поиска кириллических символов
+        const cyrillicPattern = /[а-яё]/i;
+
+        return cyrillicPattern.test(text);
+    }
+
+    function encrypt(text, shift) {
+        let result = '';
+
+        for (let i = 0; i < text.length; i++) {
+            let char = text[i];
+
+                // Encrypt only alphabetic characters
+                let code = text.charCodeAt(i);
+
+                // Handle uppercase letters
+                if (code >= 65 && code <= 90) {
+                    char = String.fromCharCode(((code - 65 + shift) % 26) + 65);
+                }
+                // Handle lowercase letters
+                else if (code >= 97 && code <= 122) {
+                    char = String.fromCharCode(((code - 97 + shift) % 26) + 97);
+                }
+
+
+            result += char;
+        }
+        return result;
+        // return "You can dance only latino!";
+    }
+
+    function decrypt(text, shift) {
+        return encrypt(text, -shift);
+    }
+
+    $('html').on('input keyup change', '#text', function () {
+        let text = $(this).val();
+        if (hasCyrillic(text)) {
+            $(this).addClass('error');
+            $('#encrypt, #decrypt').attr('disabled', true);
+            setTimeout(function () {
+                $('#text').removeClass('error');
+            }, 1000);
+        } else {
+            $('#encrypt, #decrypt').prop('disabled', false);
+        }
+    });
+
+    $('html').on('click', '#encrypt', function () {
+        let curInput = $('#text').val();
+        $('.result').text(encrypt(curInput, shift))
+    });
+    $('html').on('click', '#decrypt', function () {
+        let curInput = $('#text').val();
+        $('.result').text(decrypt(curInput, shift))
+    });
+</script>
+</html>
