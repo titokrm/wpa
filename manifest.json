@@ -1,7 +1,7 @@
 ﻿{
   "background_color": "#fff",
   "description": "Шифрует данные",
-  "display": "fullscreen",
+  "display": "standalone",
   "icons": [
     {
       "src": "icon/uaf.png",
