@@ -6,7 +6,9 @@ self.addEventListener('install', (e) => {
       '/index.js',
       '/jq.js',
       '/icon/udlogo.svg',
-    ])),
+    ])).catch(error => {
+      console.log('Service Worker call addAll failed:', error);
+    }),
   );
 });
 
